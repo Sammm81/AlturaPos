@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'variant_selector_sheet.dart';
+import '../../data/sample_variants.dart';
+import '../../data/models/variant_models.dart';
 
 class SelectItemBottomSheet extends StatefulWidget {
   const SelectItemBottomSheet({super.key});
@@ -440,35 +443,69 @@ class _SelectItemBottomSheetState extends State<SelectItemBottomSheet>
     );
   }
 
-  void _onItemSelected(Map<String, dynamic> item) {
-    setState(() {
-      _selectedItems.add(item);
-      _totalAmount += item['price'] as int;
-    });
+  Future<void> _onItemSelected(Map<String, dynamic> item) async {
+    // Get variants for this item
+    final variants = SampleVariants.getVariantsForItem(item['name'] as String);
     
-    // Show lightweight feedback
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.check_circle, color: Colors.white, size: 20),
-            const SizedBox(width: 8),
-            Text('${item['name']} added'),
-          ],
-        ),
-        backgroundColor: const Color(0xFF4CAF50),
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(milliseconds: 800),
-        margin: const EdgeInsets.only(
-          bottom: 80, // Above the footer
-          left: 16,
-          right: 16,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+    // Open variant selector sheet
+    final customizedItem = await showModalBottomSheet<CustomizedItem>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => VariantSelectorSheet(
+        item: item,
+        variants: variants,
       ),
     );
+    
+    if (customizedItem != null && mounted) {
+      setState(() {
+        // Add the customized item to cart
+        _selectedItems.add(customizedItem.toMap());
+        _totalAmount += customizedItem.totalPrice;
+      });
+      
+      // Show success feedback
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.white, size: 20),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('${item['name']} added'),
+                      if (customizedItem.getVariantSummary().isNotEmpty)
+                        Text(
+                          customizedItem.getVariantSummary(),
+                          style: const TextStyle(fontSize: 11),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: const Color(0xFF4CAF50),
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(milliseconds: 1200),
+            margin: const EdgeInsets.only(
+              bottom: 80, // Above the footer
+              left: 16,
+              right: 16,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        );
+      }
+    }
   }
 
   void _onDone() {

@@ -26,7 +26,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
       setState(() {
         for (final item in result) {
           _orderItems.add(item);
-          _totalAmount += item['price'] as int;
+          // Use totalPrice from customized item or price from simple item
+          final itemPrice = item['totalPrice'] as int? ?? item['price'] as int;
+          _totalAmount += itemPrice;
         }
       });
       
@@ -51,7 +53,9 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
 
   void _removeItem(int index) {
     setState(() {
-      _totalAmount -= _orderItems[index]['price'] as int;
+      final item = _orderItems[index];
+      final itemPrice = item['totalPrice'] as int? ?? item['price'] as int;
+      _totalAmount -= itemPrice;
       _orderItems.removeAt(index);
     });
   }
@@ -154,6 +158,31 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
   }
 
   Widget _buildOrderItem(BuildContext context, Map<String, dynamic> item, int index) {
+    // Handle both customized items and simple items
+    final itemName = item['itemName'] as String? ?? item['name'] as String;
+    final basePrice = item['basePrice'] as int? ?? item['price'] as int;
+    final totalPrice = item['totalPrice'] as int? ?? item['price'] as int;
+    final quantity = item['quantity'] as int? ?? 1;
+    final specialNotes = item['specialNotes'] as String?;
+    
+    // Get variant summary if exists
+    String? variantInfo;
+    if (item.containsKey('selectedVariants')) {
+      final selectedVariants = item['selectedVariants'] as Map<String, dynamic>?;
+      if (selectedVariants != null && selectedVariants.isNotEmpty) {
+        final variants = <String>[];
+        selectedVariants.forEach((groupId, options) {
+          if (options is List && options.isNotEmpty) {
+            final labels = options.map((opt) => opt['label'] as String).join(', ');
+            variants.add(labels);
+          }
+        });
+        if (variants.isNotEmpty) {
+          variantInfo = variants.join(' • ');
+        }
+      }
+    }
+    
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 1,
@@ -172,7 +201,7 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
-                item['icon'] as IconData,
+                item['icon'] as IconData? ?? Icons.fastfood,
                 color: Colors.white,
                 size: 24,
               ),
@@ -182,14 +211,68 @@ class _NewOrderScreenState extends State<NewOrderScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    item['name'] as String,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          itemName,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      if (quantity > 1)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF6F00).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            'x$quantity',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFFF6F00),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
+                  if (variantInfo != null) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      variantInfo,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.grey[600],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                  if (specialNotes != null) ...[
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(Icons.note, size: 14, color: Colors.grey[600]),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            specialNotes,
+                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.grey[600],
+                              fontStyle: FontStyle.italic,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                  const SizedBox(height: 4),
                   Text(
-                    'Rp ${_formatCurrency(item['price'] as int)}',
+                    'Rp ${_formatCurrency(totalPrice)}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: const Color(0xFFFF6F00),
                       fontWeight: FontWeight.w600,

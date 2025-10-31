@@ -10,12 +10,12 @@ class MenuItemsScreen extends StatefulWidget {
 
 class _MenuItemsScreenState extends State<MenuItemsScreen> {
   final List<Map<String, dynamic>> _menuItems = [
-    {'name': 'Burger', 'price': 5.99, 'icon': Icons.lunch_dining, 'category': 'Food'},
-    {'name': 'Pizza', 'price': 8.99, 'icon': Icons.local_pizza, 'category': 'Food'},
-    {'name': 'Coffee', 'price': 2.99, 'icon': Icons.local_cafe, 'category': 'Beverages'},
-    {'name': 'Salad', 'price': 4.99, 'icon': Icons.set_meal, 'category': 'Food'},
-    {'name': 'Pasta', 'price': 7.99, 'icon': Icons.ramen_dining, 'category': 'Food'},
-    {'name': 'Soda', 'price': 1.99, 'icon': Icons.local_drink, 'category': 'Beverages'},
+    {'name': 'Burger', 'price': 45000, 'icon': Icons.lunch_dining, 'category': 'Food', 'color': const Color(0xFFFF6F00)},
+    {'name': 'Pizza', 'price': 65000, 'icon': Icons.local_pizza, 'category': 'Food', 'color': const Color(0xFFE91E63)},
+    {'name': 'Coffee', 'price': 25000, 'icon': Icons.local_cafe, 'category': 'Beverages', 'color': const Color(0xFF795548)},
+    {'name': 'Salad', 'price': 35000, 'icon': Icons.set_meal, 'category': 'Food', 'color': const Color(0xFF4CAF50)},
+    {'name': 'Pasta', 'price': 55000, 'icon': Icons.ramen_dining, 'category': 'Food', 'color': const Color(0xFFFFC107)},
+    {'name': 'Soda', 'price': 15000, 'icon': Icons.local_drink, 'category': 'Beverages', 'color': const Color(0xFF2196F3)},
   ];
 
   String _selectedCategory = 'All';
@@ -114,7 +114,7 @@ class _MenuItemsScreenState extends State<MenuItemsScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
-                      childAspectRatio: 0.85,
+                      childAspectRatio: 0.68,
                     ),
                     itemCount: _filteredItems.length,
                     itemBuilder: (context, index) {
@@ -163,11 +163,14 @@ class _MenuItemsScreenState extends State<MenuItemsScreen> {
   }
 
   Widget _buildMenuItem(BuildContext context, Map<String, dynamic> item, int index) {
+    final color = item['color'] as Color? ?? const Color(0xFFFF6F00);
+    
     return Hero(
       tag: 'menu-item-$index',
       child: Card(
-        elevation: 2,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 4,
+        shadowColor: color.withAlpha(80),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: InkWell(
           onTap: () {
             Navigator.push(
@@ -180,150 +183,180 @@ class _MenuItemsScreenState extends State<MenuItemsScreen> {
               ),
             );
           },
-          borderRadius: BorderRadius.circular(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Icon section with gradient
-              Container(
-                height: 120,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      const Color(0xFFFF6F00).withOpacity(0.7),
-                      const Color(0xFFFFD180).withOpacity(0.5),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(16),
-                    topRight: Radius.circular(16),
-                  ),
-                ),
-                child: Center(
-                  child: Icon(
-                    item['icon'] as IconData,
-                    size: 56,
-                    color: Colors.white,
-                  ),
-                ),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                colors: [
+                  Colors.white,
+                  color.withAlpha(15),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
               ),
-              
-              // Item details
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Futuristic Icon Header
+                Container(
+                  height: 105,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        color,
+                        color.withAlpha(200),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                  ),
+                  child: Stack(
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            item['name'] as String,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.w600,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                      // Animated circles background
+                      Positioned(
+                        top: -20,
+                        right: -20,
+                        child: Container(
+                          width: 70,
+                          height: 70,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withAlpha(25),
                           ),
-                          const SizedBox(height: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFF6F00).withOpacity(0.1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              item['category'] as String,
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                color: const Color(0xFFFF6F00),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '\$${(item['price'] as double).toStringAsFixed(2)}',
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: const Color(0xFFFF6F00),
-                              fontWeight: FontWeight.bold,
-                            ),
+                      Positioned(
+                        bottom: -10,
+                        left: -10,
+                        child: Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withAlpha(15),
                           ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Edit ${item['name']}'),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: const Duration(seconds: 1),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.blue.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: const Icon(
-                                    Icons.edit,
-                                    size: 16,
-                                    color: Colors.blue,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 4),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _menuItems.removeWhere((i) => i['name'] == item['name']);
-                                  });
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Item deleted'),
-                                      behavior: SnackBarBehavior.floating,
-                                      duration: Duration(seconds: 2),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: const Icon(
-                                    Icons.delete,
-                                    size: 16,
-                                    color: Colors.red,
-                                  ),
-                                ),
+                        ),
+                      ),
+                      // Icon
+                      Center(
+                        child: Container(
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withAlpha(40),
+                          ),
+                          child: Icon(
+                            item['icon'] as IconData,
+                            size: 38,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      // Category Badge
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withAlpha(230),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(20),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
                             ],
                           ),
-                        ],
+                          child: Text(
+                            item['category'] as String,
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                
+                // Content
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Title
+                        Text(
+                          item['name'] as String,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1E1E1E),
+                            letterSpacing: 0.2,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 6),
+                        
+                        // Price
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Price',
+                              style: TextStyle(
+                                fontSize: 9,
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              'Rp ${_formatCurrency(item['price'] as int)}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: color,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.2,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  String _formatCurrency(int amount) {
+    return amount.toString().replaceAllMapped(
+          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+          (Match m) => '${m[1]}.',
+        );
   }
 }
