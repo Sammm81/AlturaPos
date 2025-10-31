@@ -1,10 +1,29 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'variant.dart';
-import 'modifier.dart';
 
 part 'menu_item.freezed.dart';
-part 'menu_item.g.dart';
 
+/// Variant value object
+@freezed
+class Variant with _$Variant {
+  const factory Variant({
+    required String id,
+    required String name,
+    required double priceAdjustment,
+  }) = _Variant;
+}
+
+/// Modifier value object
+@freezed
+class Modifier with _$Modifier {
+  const factory Modifier({
+    required String id,
+    required String name,
+    required double price,
+    required String category,
+  }) = _Modifier;
+}
+
+/// Menu item entity
 @freezed
 class MenuItem with _$MenuItem {
   const factory MenuItem({
@@ -21,6 +40,4 @@ class MenuItem with _$MenuItem {
     required DateTime createdAt,
     required DateTime updatedAt,
   }) = _MenuItem;
-
-  factory MenuItem.fromJson(Map<String, dynamic> json) => _$MenuItemFromJson(json);
 }

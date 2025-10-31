@@ -1,9 +1,16 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'enums.dart';
 
 part 'transaction.freezed.dart';
-part 'transaction.g.dart';
 
+/// Payment method enumeration
+enum PaymentMethod {
+  cash,
+  qris,
+  card,
+  other,
+}
+
+/// Transaction entity
 @freezed
 class Transaction with _$Transaction {
   const factory Transaction({
@@ -19,6 +26,4 @@ class Transaction with _$Transaction {
     @Default(false) bool isSynced,
     required DateTime createdAt,
   }) = _Transaction;
-
-  factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
 }
