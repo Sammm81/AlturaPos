@@ -1,0 +1,56 @@
+# Build configuration for code generation
+targets:
+  $default:
+    builders:
+      # Freezed configuration
+      freezed:
+        enabled: true
+        options:
+          # Generate fromJson/toJson methods
+          json_serializable: true
+          # Generate when methods
+          when: true
+          # Generate map methods  
+          map: true
+          
+      # JSON Serializable configuration
+      json_serializable:
+        enabled: true
+        options:
+          # Generate generic fromJson constructor
+          any_map: false
+          # Check for required parameters
+          checked: true
+          # Create factory constructor
+          create_factory: true
+          # Create toJson method
+          create_to_json: true
+          # Disallow extra keys
+          disallow_unrecognized_keys: false
+          # Use field name by default
+          explicit_to_json: true
+          # Generate nullable fields
+          field_rename: none
+          # Include if null
+          include_if_null: true
+          
+      # Riverpod generator configuration
+      riverpod_generator:
+        enabled: true
+        
+      # Drift generator configuration
+      drift_dev:
+        enabled: true
+        options:
+          # Generate companion classes
+          generate_companions: true
+          # Generate connect method
+          generate_connect_constructor: true
+          # Generate data classes
+          generate_data_classes: true
+          # Generate manager
+          generate_manager: false
+          # Skip verification code
+          skip_verification_code: false
+          # Store date/time values as text
+          store_date_time_values_as_text: true
