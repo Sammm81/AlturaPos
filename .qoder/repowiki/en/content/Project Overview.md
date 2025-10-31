@@ -1,58 +1,93 @@
 # Project Overview
 
 <cite>
-**Referenced Files in This Document**   
+**Referenced Files in This Document**  
 - [main.dart](file://lib/main.dart)
 - [pubspec.yaml](file://pubspec.yaml)
-- [widget_test.dart](file://test/widget_test.dart)
 - [README.md](file://README.md)
+- [widget_test.dart](file://test/widget_test.dart)
 </cite>
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [Project Purpose and Goals](#project-purpose-and-goals)
-3. [Target Audience and Use Cases](#target-audience-and-use-cases)
-4. [Architectural Foundation](#architectural-foundation)
-5. [Cross-Platform Capabilities](#cross-platform-capabilities)
-6. [Configuration and Dependencies](#configuration-and-dependencies)
-7. [Codebase Structure and Scalability](#codebase-structure-and-scalability)
-8. [Current Functionality and Roadmap](#current-functionality-and-roadmap)
+2. [Project Structure](#project-structure)
+3. [Core Components](#core-components)
+4. [Architecture Overview](#architecture-overview)
+5. [Development and Testing](#development-and-testing)
+6. [Conclusion](#conclusion)
 
 ## Introduction
 
-The `altura_pos` Flutter application serves as a foundational Point of Sale (POS) system designed to provide developers with a starting template for building retail-focused mobile and desktop applications. Currently implemented as a starter project, it demonstrates core Flutter concepts through a simple counter functionality while establishing the architectural groundwork for future expansion into a full-featured POS solution. This document provides a comprehensive overview of the project's structure, goals, and technical foundation.
+The `altura_pos` project is a Flutter-based Point-of-Sale (POS) application currently in its initial development phase. As of now, it is built upon the default Flutter template and demonstrates a basic counter functionality. The application is designed to evolve into a full-featured retail transaction system, supporting comprehensive sales, inventory, and customer management capabilities.
+
+Currently, the app serves as a foundational scaffold, showcasing Flutter's declarative UI programming model through a simple interactive counter. The primary goal is to incrementally develop this minimal implementation into a robust, cross-platform POS solution suitable for real-world retail environments.
 
 **Section sources**
-- [README.md](file://README.md#L1-L17)
-- [pubspec.yaml](file://pubspec.yaml#L1-L90)
+- [README.md](file://README.md#L1-L16)
+- [pubspec.yaml](file://pubspec.yaml#L1-L10)
 
-## Project Purpose and Goals
+## Project Structure
 
-The primary purpose of `altura_pos` is to function as a scalable starter template for Flutter-based Point of Sale systems. While currently demonstrating basic counter functionality, the project is strategically designed to evolve into a comprehensive retail solution. The core goal is to establish a clean, maintainable codebase that can be incrementally enhanced with essential POS features such as payment processing, inventory management, customer relationship management, and barcode scanning capabilities.
+The `altura_pos` project follows the standard Flutter directory structure, enabling cross-platform deployment across Android, iOS, Web, Linux, macOS, and Windows from a single codebase. The core application logic resides in the `lib/` directory, while platform-specific configurations are maintained in their respective folders (`android/`, `ios/`, `windows/`, etc.).
 
-By beginning with a minimal viable structure, the project enables developers to understand the foundational architecture before implementing complex business logic. This approach ensures that future feature additions integrate seamlessly with the existing codebase, maintaining code quality and architectural integrity throughout the development lifecycle.
+Key directories include:
+- `lib/`: Contains the main Dart source code, currently centered around `main.dart`
+- `test/`: Houses widget and integration tests
+- `web/`, `android/`, `ios/`, `linux/`, `macos/`, `windows/`: Platform-specific configuration and native code
+- Root-level configuration files: `pubspec.yaml`, `analysis_options.yaml`, and `README.md`
 
-**Section sources**
-- [README.md](file://README.md#L1-L17)
+This structure provides a scalable foundation for future feature development while maintaining Flutter's convention-over-configuration philosophy.
+
+```mermaid
+graph TB
+subgraph "Core"
+A[lib/main.dart] --> B[MyApp]
+B --> C[MyHomePage]
+C --> D[_MyHomePageState]
+end
+subgraph "Platforms"
+E[android/] --> A
+F[ios/] --> A
+G[web/] --> A
+H[windows/] --> A
+I[linux/] --> A
+J[macos/] --> A
+end
+subgraph "Testing"
+K[test/widget_test.dart] --> A
+end
+subgraph "Configuration"
+L[pubspec.yaml] --> A
+M[README.md] --> A
+end
+```
+
+**Diagram sources**
 - [main.dart](file://lib/main.dart#L1-L123)
-
-## Target Audience and Use Cases
-
-The `altura_pos` application is specifically targeted at Flutter developers who are building or planning to build retail applications. This includes independent developers, software agencies, and enterprise teams looking for a structured starting point for POS systems. The target audience benefits from a pre-configured Flutter environment with best practices in widget composition, state management patterns, and cross-platform considerations already established.
-
-Use cases for this project include developing POS systems for small retail stores, restaurants, service providers, and pop-up shops. The starter template is particularly valuable for developers who need to quickly prototype a retail application or want to avoid the initial setup overhead of configuring a new Flutter project from scratch. Educational institutions and training programs can also leverage this project to teach POS system development concepts in a real-world context.
-
-**Section sources**
-- [README.md](file://README.md#L1-L17)
 - [pubspec.yaml](file://pubspec.yaml#L1-L90)
 
-## Architectural Foundation
+**Section sources**
+- [main.dart](file://lib/main.dart#L1-L123)
+- [pubspec.yaml](file://pubspec.yaml#L1-L90)
 
-The `altura_pos` application is built upon Flutter's widget-based composition architecture and Material Design principles, creating a solid foundation for future expansion. The application follows a hierarchical widget structure where the `MyApp` class serves as the root widget, configuring the overall application theme and routing. This is followed by the `MyHomePage` stateful widget, which manages dynamic data and user interactions.
+## Core Components
 
-The architecture demonstrates proper separation of concerns, with stateless widgets handling presentation and stateful widgets managing mutable state. The use of `StatefulWidget` and `State` classes illustrates Flutter's reactive programming model, where UI updates are triggered by calling `setState()` when data changes. This pattern is essential for building responsive POS interfaces where inventory levels, order totals, and payment statuses need to update in real-time.
+The application's core consists of three primary components defined in `main.dart`: `MyApp`, `MyHomePage`, and `_MyHomePageState`. These classes demonstrate Flutter's widget-based architecture and state management patterns.
 
-The current implementation showcases Flutter's hot reload capabilities, allowing developers to make UI changes without losing application state—a critical feature for rapidly iterating on POS interface designs.
+`MyApp` serves as the root widget, configuring the application with Material Design theming. `MyHomePage` is a stateful widget that manages the UI, while `_MyHomePageState` contains the mutable state (the counter value) and logic for updating it. This separation follows Flutter's convention of distinguishing between stateless configuration widgets and stateful components.
+
+The current implementation showcases fundamental Flutter concepts including widget composition, state management via `setState()`, and event handling through the floating action button.
+
+**Section sources**
+- [main.dart](file://lib/main.dart#L6-L121)
+
+## Architecture Overview
+
+`altura_pos` leverages Flutter's declarative UI framework with a widget-driven architecture based on Material Design principles. The application follows a hierarchical component structure where widgets are composed to build complex UIs from simpler elements.
+
+The architecture enables reactive programming through Flutter's rendering pipeline, where UI updates are triggered by state changes. When the user interacts with the counter button, the `_incrementCounter` method calls `setState()`, prompting the framework to rebuild the affected portion of the UI tree.
+
+This foundation supports future scalability, allowing for the addition of features such as product catalogs, transaction processing, payment integration, and inventory management while maintaining a consistent development pattern.
 
 ```mermaid
 classDiagram
@@ -60,134 +95,62 @@ class MyApp {
 +build(context) Widget
 }
 class MyHomePage {
++title : String
 +createState() State
 }
 class _MyHomePageState {
--int _counter
+-_counter : int
 +_incrementCounter() void
 +build(context) Widget
 }
 MyApp --> MyHomePage : "renders"
-MyHomePage --> _MyHomePageState : "manages"
+MyHomePage --> _MyHomePageState : "creates"
 ```
 
-**Diagram sources **
-- [main.dart](file://lib/main.dart#L15-L40)
-- [main.dart](file://lib/main.dart#L43-L123)
+**Diagram sources**
+- [main.dart](file://lib/main.dart#L6-L121)
 
 **Section sources**
-- [main.dart](file://lib/main.dart#L1-L123)
+- [main.dart](file://lib/main.dart#L6-L121)
 
-## Cross-Platform Capabilities
+## Development and Testing
 
-One of the key advantages of the `altura_pos` application is its inherent cross-platform support enabled by the Flutter framework. The project is configured to run seamlessly on Android, iOS, Web, Linux, macOS, and Windows platforms from a single codebase. This capability is particularly valuable for POS systems that may need to operate on various hardware configurations, from mobile devices used by sales staff to desktop terminals at checkout counters.
+The project includes a basic widget test in `widget_test.dart` that validates the counter functionality. This test uses Flutter's testing framework to simulate user interaction with the floating action button and verify that the counter increments correctly.
 
-The cross-platform nature of Flutter allows businesses to maintain a consistent user experience across different devices while reducing development and maintenance costs. For example, a retail manager could use the same application interface on an iPad for floor sales, a Windows desktop for back-office operations, and a web browser for remote monitoring—all powered by the same underlying code.
+The `pubspec.yaml` file defines project metadata, dependencies, and Flutter-specific configurations such as asset management and font usage. Currently, the application depends only on core Flutter packages and `cupertino_icons`, maintaining a minimal dependency footprint suitable for early-stage development.
 
-This multi-platform support is automatically configured through Flutter's build system, which generates platform-specific binaries while preserving the shared business logic and UI components defined in the Dart code.
-
-**Section sources**
-- [pubspec.yaml](file://pubspec.yaml#L1-L90)
-- [main.dart](file://lib/main.dart#L1-L123)
-
-## Configuration and Dependencies
-
-The project's configuration is managed through the `pubspec.yaml` file, which defines essential metadata and dependency requirements. The configuration includes the project name (`altura_pos`), description, versioning scheme (1.0.0+1), and SDK constraints (Dart SDK ^3.9.2). The `publish_to: 'none'` directive indicates this is a private project not intended for publication on pub.dev.
-
-Key dependencies include:
-- **flutter**: The core Flutter SDK
-- **cupertino_icons**: For iOS-style icons
-- **flutter_test**: For widget testing
-- **flutter_lints**: For code quality enforcement
-
-The Flutter-specific configuration enables Material Design with `uses-material-design: true`, ensuring access to the comprehensive set of Material icons and components. This configuration choice aligns with modern POS interface design principles, providing a professional, familiar user experience.
-
-The inclusion of `flutter_lints` demonstrates a commitment to code quality and consistency, which is crucial for maintaining a large-scale POS application as it grows in complexity.
-
-**Section sources**
-- [pubspec.yaml](file://pubspec.yaml#L1-L90)
-- [analysis_options.yaml](file://analysis_options.yaml)
-
-## Codebase Structure and Scalability
-
-The `altura_pos` codebase follows Flutter's standard project structure, organized into platform-specific directories (android, ios, linux, macos, windows, web) and core application directories (lib, test). The primary application logic resides in `lib/main.dart`, while tests are located in the `test/` directory.
-
-This structure is highly scalable, allowing for the organized addition of new features. Future development can follow a modular approach by creating dedicated directories within `lib/` for specific POS functionalities:
-- `lib/payment/` for payment processing
-- `lib/inventory/` for product management
-- `lib/orders/` for transaction handling
-- `lib/reports/` for business analytics
-
-The current single-file architecture in `lib/main.dart` serves as an effective starting point, and as the application grows, it can be refactored into multiple Dart files while maintaining the same architectural patterns. This evolutionary approach ensures that developers can start simple and gradually introduce complexity as needed.
+The configuration enables Material Design through `uses-material-design: true` and specifies the application version and SDK constraints, ensuring compatibility across development environments.
 
 ```mermaid
-graph TB
-subgraph "Core Application"
-Main["lib/main.dart<br/>Root Widget"]
-end
-subgraph "Testing"
-Test["test/widget_test.dart<br/>Counter Test"]
-end
-subgraph "Configuration"
-Pubspec["pubspec.yaml<br/>Dependencies & Metadata"]
-Analysis["analysis_options.yaml<br/>Code Linting"]
-end
-subgraph "Platform Support"
-Android["android/<br/>Android Platform"]
-iOS["ios/<br/>iOS Platform"]
-Web["web/<br/>Web Platform"]
-Linux["linux/<br/>Linux Platform"]
-macOS["macos/<br/>macOS Platform"]
-Windows["windows/<br/>Windows Platform"]
-end
-Main --> Pubspec
-Main --> Test
-Pubspec --> Analysis
-Main --> Android
-Main --> iOS
-Main --> Web
-Main --> Linux
-Main --> macOS
-Main --> Windows
-style Main fill:#4CAF50,stroke:#388E3C
-style Test fill:#2196F3,stroke:#1976D2
-style Pubspec fill:#FF9800,stroke:#F57C00
-style Analysis fill:#9C27B0,stroke:#7B1FA2
-style Android fill:#607D8B,stroke:#455A64
-style iOS fill:#607D8B,stroke:#455A64
-style Web fill:#607D8B,stroke:#455A64
-style Linux fill:#607D8B,stroke:#455A64
-style macOS fill:#607D8B,stroke:#455A64
-style Windows fill:#607D8B,stroke:#455A64
+sequenceDiagram
+participant Test as widget_test.dart
+participant Framework as Flutter Test
+participant App as MyApp
+participant Page as MyHomePage
+participant State as _MyHomePageState
+Test->>Framework : testWidgets('Counter increments')
+Framework->>App : pumpWidget(const MyApp())
+App->>Page : create home page
+Page->>State : createState()
+Test->>Framework : tap(add icon)
+Framework->>State : call _incrementCounter()
+State->>State : setState() {_counter++}
+State->>Page : trigger rebuild
+Framework->>Test : verify text '1' appears
 ```
 
-**Diagram sources **
-- [main.dart](file://lib/main.dart)
-- [pubspec.yaml](file://pubspec.yaml)
-- [widget_test.dart](file://test/widget_test.dart)
-- [analysis_options.yaml](file://analysis_options.yaml)
-
-**Section sources**
-- [main.dart](file://lib/main.dart)
-- [pubspec.yaml](file://pubspec.yaml)
-- [test/widget_test.dart](file://test/widget_test.dart)
-- [analysis_options.yaml](file://analysis_options.yaml)
-
-## Current Functionality and Roadmap
-
-Currently, the `altura_pos` application demonstrates basic counter functionality through a simple stateful widget that increments a value when a floating action button is pressed. This serves as a foundational example of Flutter's state management and widget composition concepts. The accompanying `widget_test.dart` file includes a basic test that verifies the counter increments correctly, establishing a testing foundation for future development.
-
-The project roadmap involves evolving this starter template into a full-featured POS system through phased feature additions:
-1. **Phase 1**: Implement product catalog management with CRUD operations
-2. **Phase 2**: Add shopping cart functionality and order processing
-3. **Phase 3**: Integrate payment processing gateways
-4. **Phase 4**: Implement inventory tracking and low-stock alerts
-5. **Phase 5**: Add barcode scanning capabilities using device cameras
-6. **Phase 6**: Develop reporting and analytics features
-
-Each phase will build upon the existing architectural foundation, maintaining the clean code structure and widget-based design patterns established in the initial implementation. This incremental approach ensures that the application remains maintainable and testable throughout its evolution from a simple counter demo to a comprehensive retail solution.
-
-**Section sources**
+**Diagram sources**
+- [widget_test.dart](file://test/widget_test.dart#L1-L30)
 - [main.dart](file://lib/main.dart#L1-L123)
-- [widget_test.dart](file://test/widget_test.dart#L1-L31)
-- [README.md](file://README.md#L1-L17)
+
+**Section sources**
+- [widget_test.dart](file://test/widget_test.dart#L1-L30)
+- [pubspec.yaml](file://pubspec.yaml#L1-L90)
+
+## Conclusion
+
+The `altura_pos` project establishes a solid foundation for a cross-platform POS application using Flutter. While currently minimal in functionality—demonstrating only a basic counter—it embodies the architectural principles and development patterns necessary for scaling into a comprehensive retail solution.
+
+The current implementation provides a working example of Flutter's reactive programming model, state management, and widget composition. As development progresses, this scaffold will be extended with features such as product management, sales transactions, payment processing, and reporting capabilities, transforming the simple counter demo into a fully functional point-of-sale system.
+
+The project's structure supports this evolution, with clear separation of concerns and adherence to Flutter best practices, ensuring maintainability and scalability throughout the development lifecycle.

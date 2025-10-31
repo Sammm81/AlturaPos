@@ -2,172 +2,200 @@
 
 <cite>
 **Referenced Files in This Document**   
-- [main.dart](file://lib/main.dart)
 - [pubspec.yaml](file://pubspec.yaml)
-- [MainActivity.kt](file://android/app/src/main/kotlin/com/example/altura_pos/MainActivity.kt)
-- [AppDelegate.swift](file://ios/Runner/AppDelegate.swift)
-- [local.properties](file://android/local.properties)
-- [main.cpp](file://windows/runner/main.cpp)
-- [my_application.cc](file://linux/runner/my_application.cc)
-- [AndroidManifest.xml](file://android/app/src/main/AndroidManifest.xml)
+- [main.dart](file://lib/main.dart)
+- [widget_test.dart](file://test/widget_test.dart)
+- [README.md](file://README.md)
 </cite>
 
 ## Table of Contents
 1. [Introduction](#introduction)
-2. [Development Environment Setup](#development-environment-setup)
-3. [Repository Cloning and Dependency Installation](#repository-cloning-and-dependency-installation)
-4. [Application Execution Flow](#application-execution-flow)
-5. [Running the Application](#running-the-application)
-6. [Hot Reload and Hot Restart](#hot-reload-and-hot-restart)
-7. [Common Setup Issues and Solutions](#common-setup-issues-and-solutions)
+2. [Prerequisites](#prerequisites)
+3. [Project Setup](#project-setup)
+4. [Running the Application](#running-the-application)
+5. [Development Features](#development-features)
+6. [Platform-Specific Execution](#platform-specific-execution)
+7. [Common Setup Issues](#common-setup-issues)
 8. [Conclusion](#conclusion)
 
 ## Introduction
-The altura_pos application is a Flutter-based point-of-sale system designed for cross-platform deployment. This guide provides comprehensive instructions for setting up the development environment, understanding the application structure, and running the application across various platforms. The project follows standard Flutter conventions and is configured to support Android, iOS, Windows, Linux, and web platforms.
 
-## Development Environment Setup
-To begin development with the altura_pos application, you need to set up the Flutter SDK and configure your development environment. Follow these steps:
+The `altura_pos` application is a Flutter-based project designed as a starting point for building cross-platform applications. This guide provides comprehensive instructions for setting up, running, and developing the application across multiple platforms including mobile, web, and desktop environments. The documentation is structured to support both beginners and experienced developers by combining foundational setup steps with technical depth on Flutter workflows and best practices.
 
-1. **Install Flutter SDK**: Download and install the Flutter SDK from the official website. The project requires Flutter SDK version 3.9.2 or higher, as specified in the pubspec.yaml file.
+**Section sources**
+- [README.md](file://README.md#L1-L17)
 
-2. **Configure IDE**: Set up your preferred IDE (Android Studio, Visual Studio Code, or IntelliJ IDEA) with the Flutter and Dart plugins. This enables features like code completion, debugging, and hot reload.
+## Prerequisites
+
+Before setting up the `altura_pos` application, ensure your development environment meets the following requirements:
+
+1. **Flutter SDK**: Version 3.9.2 or higher must be installed. The project specifies `sdk: ^3.9.2` in its environment configuration, ensuring compatibility with recent Flutter features while allowing patch-level updates.
+
+2. **Supported IDEs**: 
+   - Android Studio with Flutter and Dart plugins
+   - Visual Studio Code with Flutter extension
+   - IntelliJ IDEA with Flutter support
+   These IDEs provide essential tools such as code completion, debugging, hot reload, and device emulation.
 
 3. **Platform-Specific Tools**:
-   - **Android**: Install Android Studio and configure the Android SDK. The local.properties file in the android directory specifies the SDK path: `sdk.dir=C:\\Users\\CODE.ID\\AppData\\Local\\Android\\sdk`.
-   - **iOS**: Install Xcode on macOS for iOS development and testing.
-   - **Windows/Linux**: Ensure you have the necessary build tools installed. The CMakeLists.txt files in the windows and linux directories configure the build process for these platforms.
+   - For Android: Android Studio with SDK Platform-Tools
+   - For iOS: Xcode (macOS only)
+   - For Web: Chrome or any modern browser
+   - For Desktop: Appropriate build tools for Windows, macOS, or Linux
 
-4. **Verify Installation**: Run `flutter doctor` in your terminal to verify that all components are correctly installed and configured.
-
-**Section sources**
-- [pubspec.yaml](file://pubspec.yaml#L20-L21)
-- [local.properties](file://android/local.properties#L1)
-
-## Repository Cloning and Dependency Installation
-After setting up your development environment, clone the repository and install the required dependencies:
-
-1. **Clone the Repository**: Use Git to clone the altura_pos repository from its source location.
-
-2. **Navigate to Project Directory**: Change into the project directory using your terminal or command prompt.
-
-3. **Install Dependencies**: Run `flutter pub get` to install all dependencies specified in the pubspec.yaml file. The project depends on:
-   - Flutter SDK
-   - cupertino_icons package (^1.0.8) for iOS-style icons
-   - flutter_test for testing
-   - flutter_lints (^5.0.0) for code quality checks
-
-The pubspec.yaml file also specifies that the application uses Material Design, ensuring consistent UI components across platforms.
+All dependencies are managed through the Flutter toolchain, which handles package resolution and native compilation for target platforms.
 
 **Section sources**
-- [pubspec.yaml](file://pubspec.yaml#L24-L45)
+- [pubspec.yaml](file://pubspec.yaml#L15-L18)
 
-## Application Execution Flow
-The execution flow of the altura_pos application begins with the main() function in main.dart and proceeds through the Flutter framework initialization:
+## Project Setup
+
+To initialize the `altura_pos` project, follow these steps:
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/example/altura_pos.git
+   cd altura_pos
+   ```
+
+2. **Install Dependencies**:
+   Run the following command to fetch all declared packages:
+   ```bash
+   flutter pub get
+   ```
+   This installs the core dependencies specified in `pubspec.yaml`:
+   - `flutter`: The core Flutter framework
+   - `cupertino_icons`: Icon set for iOS-style interfaces
+   - `flutter_test`: Testing utilities (dev dependency)
+   - `flutter_lints`: Code quality rules (dev dependency)
+
+3. **Verify Installation**:
+   Use `flutter pub outdated` to check for available package updates, or `flutter pub upgrade --major-versions` to update to the latest compatible versions.
+
+The dependency management system ensures that all required libraries are downloaded and linked correctly for development and testing.
+
+**Section sources**
+- [pubspec.yaml](file://pubspec.yaml#L20-L50)
+
+## Running the Application
+
+Launch the application using the standard Flutter run command:
+
+```bash
+flutter run
+```
+
+This command automatically detects connected devices or emulators and deploys the app accordingly. If multiple devices are available, you can specify a target using:
+
+```bash
+flutter run -d <device-id>
+```
+
+Use `flutter devices` to list all available targets. The application entry point is defined in `lib/main.dart`, which initializes the `MyApp` widget and sets up the MaterialApp with a default theme and home screen.
+
+Upon successful execution, the app displays a counter interface where users can increment a value via a floating action button. This serves as both a functional demo and a validation of the development environment.
 
 ```mermaid
 flowchart TD
-A["main() function"] --> B["runApp(const MyApp())"]
-B --> C["MyApp widget creation"]
-C --> D["MaterialApp initialization"]
-D --> E["home: MyHomePage widget"]
-E --> F["Widget tree rendering"]
-F --> G["UI display"]
+A["Clone Repository"] --> B["Run flutter pub get"]
+B --> C["Install Dependencies"]
+C --> D["Execute flutter run"]
+D --> E["App Launches on Target Device"]
 ```
 
 **Diagram sources**
-- [main.dart](file://lib/main.dart#L3-L7)
-
-The main() function serves as the entry point, calling runApp() with the MyApp widget as its parameter. MyApp is a StatelessWidget that returns a MaterialApp widget, which acts as the root of the application's widget tree. The MaterialApp configures the app's theme and sets MyHomePage as the home screen. MyHomePage is a StatefulWidget that manages its state, including the counter value that increments when the user interacts with the floating action button.
+- [pubspec.yaml](file://pubspec.yaml#L20-L50)
+- [main.dart](file://lib/main.dart#L1-L10)
 
 **Section sources**
-- [main.dart](file://lib/main.dart#L3-L122)
+- [main.dart](file://lib/main.dart#L1-L10)
 
-## Running the Application
-You can run the altura_pos application on various platforms using the Flutter CLI:
+## Development Features
 
-1. **Connect a Device or Start an Emulator**:
-   - For Android, start the Android Emulator from Android Studio or connect a physical device via USB.
-   - For iOS, use the iOS Simulator from Xcode.
-   - For Windows/Linux, the application runs directly on the host system.
+Flutter enhances developer productivity through two key features: hot reload and hot restart.
 
-2. **Run in Debug Mode**: Execute `flutter run` to launch the application in debug mode. This mode enables debugging features and hot reload.
+- **Hot Reload**: Press `r` in the terminal or use the IDE's reload button to apply code changes instantly without losing application state. For example, modifying the `seedColor` in `ColorScheme.fromSeed(seedColor: Colors.deepPurple)` will update the UI appearance while preserving the current counter value.
 
-3. **Run in Release Mode**: Use `flutter run --release` to run the application in release mode, which optimizes performance and disables debugging features.
+- **Hot Restart**: Use `R` (capital) to completely rebuild the app, resetting all state. This is necessary when making structural changes such as adding new dependencies or modifying widget hierarchies.
 
-4. **Target Specific Platforms**: Use the `-d` flag to specify a target device. For example:
-   - `flutter run -d chrome` to run on the web
-   - `flutter run -d windows` to run on Windows
+These features are demonstrated in the default `MyHomePage` widget, where comments explicitly guide developers to experiment with theme changes and observe real-time updates. The state preservation during hot reload ensures rapid iteration on UI designs without repetitive manual testing.
 
-The platform-specific entry points are configured as follows:
-- **Android**: MainActivity.kt extends FlutterActivity
-- **iOS**: AppDelegate.swift extends FlutterAppDelegate
-- **Windows**: main.cpp initializes the Flutter project and creates the window
-- **Linux**: my_application.cc handles application activation and window creation
+**Section sources**
+- [main.dart](file://lib/main.dart#L20-L35)
+
+## Platform-Specific Execution
+
+The `altura_pos` application supports deployment across multiple platforms using specific Flutter commands:
+
+- **Mobile (Android/iOS)**:
+  ```bash
+  flutter run
+  ```
+
+- **Web**:
+  ```bash
+  flutter run -d chrome
+  ```
+  Or deploy to a web server using:
+  ```bash
+  flutter build web
+  ```
+
+- **Desktop (Windows, macOS, Linux)**:
+  ```bash
+  flutter run -d windows
+  flutter run -d macos
+  flutter run -d linux
+  ```
+  Build standalone executables with:
+  ```bash
+  flutter build windows
+  ```
+
+The project structure includes platform-specific directories (`android/`, `ios/`, `windows/`, etc.) that contain native code and configuration files. These are automatically generated and maintained by Flutter, requiring minimal manual intervention for standard use cases.
 
 ```mermaid
-sequenceDiagram
-participant User as Developer
-participant CLI as Flutter CLI
-participant Platform as Target Platform
-participant App as altura_pos App
-User->>CLI : flutter run
-CLI->>CLI : Check connected devices
-CLI->>Platform : Deploy application
-Platform->>App : Initialize Flutter engine
-App->>App : Execute main() function
-App->>Platform : Render UI
-Platform-->>User : Display application
+graph TB
+subgraph Platforms
+A[Mobile]
+B[Web]
+C[Desktop]
+end
+D["flutter run"] --> A
+E["flutter run -d chrome"] --> B
+F["flutter run -d windows"] --> C
 ```
 
 **Diagram sources**
-- [main.dart](file://lib/main.dart#L3-L7)
-- [MainActivity.kt](file://android/app/src/main/kotlin/com/example/altura_pos/MainActivity.kt#L3)
-- [AppDelegate.swift](file://ios/Runner/AppDelegate.swift#L4)
-- [main.cpp](file://windows/runner/main.cpp#L30)
-- [my_application.cc](file://linux/runner/my_application.cc#L45)
+- [pubspec.yaml](file://pubspec.yaml#L52-L89)
+- [main.dart](file://lib/main.dart#L1-L10)
 
 **Section sources**
-- [main.dart](file://lib/main.dart#L3-L7)
-- [MainActivity.kt](file://android/app/src/main/kotlin/com/example/altura_pos/MainActivity.kt#L3)
-- [AppDelegate.swift](file://ios/Runner/AppDelegate.swift#L4)
-- [main.cpp](file://windows/runner/main.cpp#L30)
-- [my_application.cc](file://linux/runner/my_application.cc#L45)
+- [android/app/src/main/AndroidManifest.xml](file://android/app/src/main/AndroidManifest.xml)
+- [ios/Runner/Info.plist](file://ios/Runner/Info.plist)
+- [windows/CMakeLists.txt](file://windows/CMakeLists.txt)
 
-## Hot Reload and Hot Restart
-Flutter's hot reload and hot restart features significantly speed up the development process:
+## Common Setup Issues
 
-- **Hot Reload**: When you save changes to your Dart code, Flutter injects the updated code into the running application, preserving the current state. This allows you to see changes instantly without losing the application state. Trigger hot reload by pressing `r` in the terminal or using the IDE's hot reload button.
+Developers may encounter several common issues during setup:
 
-- **Hot Restart**: This completely rebuilds the widget tree and resets the application state. Use hot restart when you need to start fresh, such as after making changes to the app's initialization logic. Trigger hot restart by pressing `R` in the terminal or using the IDE's hot restart button.
-
-The main.dart file includes comments demonstrating how to use hot reload to change the application's theme color without resetting the counter state, showcasing the power of state preservation during development.
-
-**Section sources**
-- [main.dart](file://lib/main.dart#L15-L25)
-
-## Common Setup Issues and Solutions
-Developers may encounter several common issues when setting up and running the altura_pos application:
-
-1. **Android SDK Not Found**: If the Android SDK path is not correctly configured, ensure that the local.properties file in the android directory contains the correct sdk.dir path. The current configuration points to `C:\\Users\\CODE.ID\\AppData\\Local\\Android\\sdk`.
+1. **Missing Flutter SDK**: Ensure Flutter is installed and added to the system PATH. Verify installation with `flutter doctor`, which checks dependencies and reports missing components.
 
 2. **Platform-Specific Build Errors**:
-   - **Windows**: Ensure that Visual Studio with C++ development tools is installed, as the CMakeLists.txt file requires C++17 support.
-   - **Linux**: Install the GTK development libraries, as the application depends on gtk+-3.0 for Linux desktop support.
-   - **macOS**: Make sure Xcode command-line tools are installed and the license agreement is accepted.
+   - Android: Missing Android SDK or outdated Gradle version. Resolve by updating Android Studio and accepting licenses via `flutter doctor --android-licenses`.
+   - iOS: Requires macOS with Xcode installed. Run `sudo xcode-select --install` if command-line tools are missing.
+   - Desktop: Enable desktop support with `flutter config --enable-windows-desktop` (or equivalent for macOS/Linux).
 
-3. **Dependency Resolution Issues**: If `flutter pub get` fails, check your internet connection and ensure that the Flutter SDK is correctly installed. You can also try running `flutter pub cache repair` to fix corrupted cache entries.
+3. **Dependency Resolution Failures**: If `flutter pub get` fails, check internet connectivity or run `flutter pub cache repair` to rebuild the package cache.
 
-4. **Device Connection Problems**: For Android devices, ensure that USB debugging is enabled in the developer options. For iOS, make sure your device is trusted and properly provisioned for development.
+4. **IDE Integration Issues**: Ensure the correct Flutter and Dart SDK paths are configured in your IDE settings. Restart the IDE after SDK installation.
 
-5. **Gradle Sync Issues**: If Android build fails due to Gradle issues, check the settings.gradle.kts file, which configures the Flutter plugin loader and Android application plugin versions.
-
-The AndroidManifest.xml file includes the INTERNET permission in debug and profile builds, which is required for development features like hot reload, but should be reviewed for production builds.
+The `analysis_options.yaml` file enforces coding standards through `flutter_lints`, helping maintain code quality and avoid common pitfalls.
 
 **Section sources**
-- [local.properties](file://android/local.properties#L1)
-- [settings.gradle.kts](file://android/settings.gradle.kts#L15-L18)
-- [AndroidManifest.xml](file://android/app/src/debug/AndroidManifest.xml#L3)
-- [AndroidManifest.xml](file://android/app/src/profile/AndroidManifest.xml#L3)
+- [pubspec.yaml](file://pubspec.yaml#L50-L55)
+- [analysis_options.yaml](file://analysis_options.yaml)
 
 ## Conclusion
-The altura_pos application provides a solid foundation for a cross-platform point-of-sale system using Flutter. By following this guide, developers can quickly set up their environment, understand the application structure, and begin development with confidence. The project's standard Flutter architecture, combined with platform-specific configurations, enables efficient development across multiple platforms. Remember to leverage Flutter's hot reload feature for rapid iteration and consult the official Flutter documentation for advanced topics and troubleshooting.
+
+The `altura_pos` application provides a robust foundation for Flutter development across multiple platforms. By following the setup instructions, leveraging Flutter's development features, and addressing common issues proactively, developers can efficiently build and test cross-platform applications. The project's structure and configuration align with Flutter best practices, ensuring maintainability and scalability for future enhancements.
